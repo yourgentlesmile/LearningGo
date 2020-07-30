@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"unicode"
+)
 
 //单独声明变量
 var single string
@@ -47,7 +50,7 @@ func varDeclare() {
 	)
 
 	//iota是go语言的常量计数器，只能在常量的表达式中使用
-	//iota在const关键字出现时将被重置为0，const中每新增一行常量声明
+	//iota在const关键字出现时将被重置为0，const中每新增一行常量声明，注意是每新增一行
 	//将使iota计数一次(iota可理解为const语句块总的行索引)
 	//也能使用 _ 跳过某些值
 	const (
@@ -57,8 +60,22 @@ func varDeclare() {
 		_
 		counter4 // = 4
 	)
+	const (
+		a1, a2 = iota + 1, iota + 2 //这时，a1 a2分别为1 ，2，因为在同一行，所以iota相同
+	)
+}
+
+func opString() {
+
 }
 
 func main() {
-
+	s := "Hello沙河小王子"
+	c := 0
+	for _, r := range s {
+		if unicode.Is(unicode.Han, r) {
+			c++
+		}
+	}
+	fmt.Print(c)
 }
