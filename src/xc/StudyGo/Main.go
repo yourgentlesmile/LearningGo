@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"unicode"
 )
 
 //单独声明变量
@@ -65,17 +64,142 @@ func varDeclare() {
 	)
 }
 
-func opString() {
+//分支选择语句
+func switchFunc() {
+	// fallthrough 表示命中了c这个分支后还能接着执行他下面的分支(d分支)
+	// 功能就类似于java中的case里面不写break，会继续向下执行直到遇见break
+
+	s := 'c'
+	switch s {
+	case 'c':
+		fmt.Print("get c")
+		fallthrough
+	case 'd':
+		fmt.Print("get d")
+	}
+}
+
+// 循环语句
+func loopFunc() {
+	// 循环中断可以使用break，要是跳出多重for循环，可以使用goto标签
+	for i := 0; i < 10; i++ {
+		fmt.Println(i)
+	}
+	for i := 0; i < 10; i++ {
+		for j := 0; j < 10; j++ {
+			fmt.Print(i + j)
+			if j == 10 {
+				goto out
+			}
+		}
+	}
+out:
+	fmt.Print("I'm out.")
+}
+
+//运算符
+func opFunc() {
+	//基本运算符与其他语言一致，不再举例
+	//不同点：自增语句不能跟在等号后
+	//即 b = c++(或c--)是不允许的，这点与其他语言有所差别
+	//只能单独存在，例如： c++
+}
+
+//数组
+func arrayFunc() {
+	//长度为3的整型数组
+	var a [3]int
+	fmt.Print(a[1])
+
+	//有一点要注意，长度不同的数组变量不能互相赋值
+	var b [4]int
+	fmt.Print(b[1])
+	//a = b 是不允许的，这是与java不同的地方
+	//并且a与b是不同的类型
+	//如果越界访问，会出现如下错误：000panic: runtime error: index out of range [3] with length 3
+
+	//初始化 1
+	var c [2]int = [2]int{1, 2}
+	fmt.Print(c[1])
+	//初始化 2，初始化数组长度可以由后面大括号的元素个数决定
+	var d = [...]int{1, 2, 3, 4, 5}
+	fmt.Print(d[1])
+
+	//也可以部分初始化，未初始化到的则是默认值
+	var e = [3]int{1, 2}
+	fmt.Print(e[1])
+
+	//也可以根据索引初始化
+	//下标为0的初始化为1，下标为4的初始化为2
+	var f = [5]int{0: 1, 4: 2}
+	fmt.Print(f[1])
+
+	//数组遍历
+	for i := 0; i < len(f); i++ {
+		fmt.Print(f[i])
+	}
+	for index, value := range f {
+		fmt.Print(index, value)
+	}
+
+	//多维数组
+	var all = [3][2]int{
+		[2]int{1, 2},
+		[2]int{1, 2},
+		[2]int{1, 2}}
+	var city = [3][2]string{
+		{"", ""},
+		{"", ""},
+		{"", ""}}
+	fmt.Print(all, city)
+	//多维数组遍历
+	for _, v1 := range city {
+		fmt.Print(v1)
+		for _, v2 := range v1 {
+			fmt.Print(v2)
+		}
+	}
+
+	//注意，数组是值类型而不是引用类型
+	b1 := [3]int{1, 2, 3}
+	b2 := b1
+	b2[0] = 100
+	fmt.Print(b1, b2)
+	//得到的是{1,2,3}, {100,2,3}
+	//这就表明，数组是一个值类型；这和java完全不同，java中，数组是一个引用类型
+
+	//同类型的数组支持== !=进行比较，会比较内容
+	var q = [3][2]int{
+		[2]int{1, 2},
+		[2]int{1, 2},
+		[2]int{1, 2}}
+	var w = [3][2]int{
+		[2]int{1, 3},
+		[2]int{1, 2},
+		[2]int{1, 2}}
+	fmt.Print(q == w)
+
+	//[n]*T 表示指针数组，*[n]T表示数组指针，这点和C++是一致
+}
+
+/*
+切片是一个拥有相同类型元素的可变长度的序列，他是基于数组类型做的一层封装
+它非常灵活，支持自动扩容。
+注意：切片是一个引用类型，它的内部结构包含地址，长度和容量。切片一般用于快速地操作一块数据集合
+
+*/
+func sliceFunc() {
 
 }
 
 func main() {
-	s := "Hello沙河小王子"
-	c := 0
-	for _, r := range s {
-		if unicode.Is(unicode.Han, r) {
-			c++
-		}
-	}
-	fmt.Print(c)
+	var all = [3][2]int{
+		[2]int{1, 2},
+		[2]int{1, 2},
+		[2]int{1, 2}}
+	var city = [3][2]int{
+		[2]int{1, 3},
+		[2]int{1, 2},
+		[2]int{1, 2}}
+	fmt.Print(all == city)
 }
