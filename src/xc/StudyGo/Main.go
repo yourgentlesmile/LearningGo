@@ -4,6 +4,8 @@ import (
 	"fmt"
 )
 
+//帮助手册：studygolang.com/pkgdoc
+
 //单独声明变量
 var single string
 
@@ -192,14 +194,82 @@ func sliceFunc() {
 
 }
 
+/**
+指针与C语言的使用保持了一直，&为取地址符，*为地址取值
+*/
+func pointer() {
+	n := 18
+	p := &n
+	fmt.Println(p)
+	fmt.Printf("%T\n", p) //输出*int表示int指针
+
+	m := *p
+	fmt.Println(m)
+	fmt.Printf("%T\n", m) //输出int表示int类型
+}
+
+/**
+可以给指针一个已经初始化过的内存区域，用法也和C类似
+
+new函数签名为func new(Type) *Type,表示接受一个类型，返回一个指向该类型内存的指针
+
+make也是用于内存分配的，区别于new，它只用于slice，map，会议及chan(通道)的内存创建，而且它返回的类型就是这三个类型本身
+而不是他们的指针类型，所以就没必要返回他们的指针了，make函数的签名如下：
+func make(t Type, size ...IntegerType) Type
+make函数是无可替代的，我们在使用slice，mao，以及channel的时候，都需要使用make进行初始化，然后才可以对它们进行操作
+
+
+区别:
+1、二者都是用来做内存分配的。
+2、make只用于slice、map以及channel的初始化，返回的还是这三个引用类型本身；
+3、而new用于类型的内存分配，并且内存对应的值为类型零值，返回的是指向类型的指针。
+*/
+func makeAndNew() {
+	var a = new(int) //new函数会申请一块内存
+	*a = 100
+	fmt.Println(*a)
+	var b *int //此时， b = nil，是不能直接使用的
+	fmt.Println(b)
+
+	var c map[string]int
+	c = make(map[string]int, 10)
+	c["沙河娜扎"] = 100
+	fmt.Println(c)
+}
+
+/**
+hash表的使用
+*/
+func mapFunc() {
+	var a map[string]int
+	a = make(map[string]int, 10) //可以自动扩容
+	a["a"] = 1
+	a["b"] = 2
+	fmt.Println(a["123"]) //如果不存在，则会返回对应类型的零值
+	value, ok := a["13"]
+	if !ok {
+		fmt.Println("key不存在")
+	} else {
+		fmt.Println(value)
+	}
+
+	//map的遍历
+	//遍历kv
+	for k, v := range a {
+		fmt.Println(k, v)
+	}
+	//遍历key
+	for k := range a {
+		fmt.Println(k)
+	}
+	//遍历value
+	for _, v := range a {
+		fmt.Println(v)
+	}
+
+	//删除map中的键值对
+	delete(a, "a") //删除不存在的也不会报错
+}
 func main() {
-	var all = [3][2]int{
-		[2]int{1, 2},
-		[2]int{1, 2},
-		[2]int{1, 2}}
-	var city = [3][2]int{
-		[2]int{1, 3},
-		[2]int{1, 2},
-		[2]int{1, 2}}
-	fmt.Print(all == city)
+	makeAndNew()
 }
