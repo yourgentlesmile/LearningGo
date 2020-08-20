@@ -269,6 +269,15 @@ func mapFunc() {
 
 	//删除map中的键值对
 	delete(a, "a") //删除不存在的也不会报错
+
+	//map和slice组合
+
+	//切片中存map
+	var s1 = make([]map[int]string, 0, 10) //第一个参数是切片的长度,第二个是底层数组的容量
+	s1[0] = make(map[int]string, 10)
+	//map中存切片
+	var s2 = make(map[string][]int, 10)
+	s2["shanghai"] = []int{1, 2, 3}
 }
 func main() {
 	makeAndNew()
