@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 )
 
 //函数传递的都是值，也就是函数参数都是值传递，而不是引用传递，这点与java不同，java对于基本类型是值传递，而引用类型则是引用传递
@@ -43,12 +42,19 @@ func defFunc() {
 	defer fmt.Println("3")
 	fmt.Println("end")
 }
+
+func isPalidorm(s string) bool {
+	for index := range s {
+		if s[index] != s[len(s)-index-1] {
+			return false
+		}
+	}
+	return true
+}
 func main() {
 	var s string = "how do you do"
-	split := strings.Split(s, " ")
-	var res = make(map[string]int, 10)
-	for _, value := range split {
-		res[value]++
+	for i, c := range s {
+		fmt.Println(i, c)
+		fmt.Printf("%T %c\n", i, c)
 	}
-	fmt.Println(res)
 }
