@@ -35,15 +35,31 @@ func f3(x int, y ...int) {
 //defer语句
 //defer语句会将起后面跟随的语句进行延迟处理。在defer归属的函数即将返回时，讲延迟处理的语句按defer定义的逆序进行执行，也就是说
 //先被defer的语句最后被执行，最后被defer的语句最先被执行
+//defer多用于函数结束之前释放资源，(文件句柄，数据库连接，socket连接)
+
+/**
+在go中，reture语句不是原子操作，分为 给返回值赋值，和ret指令。
+这defer语句的执行时机则是在这两步之间：
+无defer语句时的执行步骤： return x 其实是 返回值 = x -> ret指令
+有defer语句时的执行步骤： return x 其实是 返回值 = x -> 运行defer语句 -> ret指令
+*/
 func defFunc() {
 	fmt.Println("start")
 	defer fmt.Println("1")
 	defer fmt.Println("2")
 	defer fmt.Println("3")
 	fmt.Println("end")
+	//该函数执行结果为
+	/**
+	start
+	end
+	3
+	2
+	1
+	*/
 }
 
-func isPalidorm(s string) bool {
+func isPalindrome(s string) bool {
 	for index := range s {
 		if s[index] != s[len(s)-index-1] {
 			return false

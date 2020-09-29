@@ -22,6 +22,27 @@ func copyFunc() {
 	c := make([]int, 2, 2)
 	copy(a, c)
 }
+
+//函数也可以作为参数传递，这点与js很像
+func func1() int {
+	return 123
+}
+
+func funcType(x func() int) {
+	fmt.Println(x())
+	//funcType(func1) 对于传递的参数是函数，可以这样使用
+}
+func calc(index string, a, b int) int {
+	ret := a + b
+	fmt.Println(index, a, b, ret)
+	return ret
+}
+
 func main() {
-	appendFunc()
+	x := 1
+	y := 2
+	defer calc("AA", x, calc("A", x, y))
+	x = 10
+	defer calc("BB", x, calc("B", x, y))
+	y = 20
 }
